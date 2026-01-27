@@ -6,8 +6,11 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
+#[UniqueEntity(fields: ['label'], message: 'Cette categorie existe déjà')]
 class Category
 {
     #[ORM\Id]
@@ -16,6 +19,8 @@ class Category
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: 'Le label ne peut pas être vide.')]
+    #[Assert\Length(max: 100 , maxMessage: 'Le label ne peut pas dépasser {{ limit }} caractères.')]
     private ?string $label = null;
 
     /**

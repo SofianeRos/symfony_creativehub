@@ -9,9 +9,14 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity(fields: ['email'], message: 'Cette adresse email existe déjà')]
+#[UniqueEntity(fields: ['pseudo'], message: 'Ce pseudo existe déjà')]
+
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -20,6 +25,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\NotBlank(message: 'L\'adresse email est obligatoire.')]
+    #[Assert\Email(message: 'L\'adresse email n\'est pas valide.')]
+    #[Assert\Length(max: 180, maxMessage: 'L\'adresse email ne peut pas dépasser {{ limit }} caractères.')]
     private ?string $email = null;
 
     /**
@@ -35,6 +43,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 150)]
+    #[Assert\NotBlank(message: 'Le pseudo est obligatoire.')]
+    #[Assert\Length(max: 150, maxMessage: 'Le pseudo ne peut pas dépasser {{ limit }} caractères.')]
+
     private ?string $pseudo = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -154,7 +165,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __serialize(): array
     {
         $data = (array) $this;
-        $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
+        $data["\0" . self::class . "\0password"] = hash('crc32c', $this->password);
 
         return $data;
     }

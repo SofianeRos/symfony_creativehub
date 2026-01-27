@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ChallengeRepository::class)]
 class Challenge
@@ -17,6 +18,9 @@ class Challenge
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message: 'Le titre ne peut pas être vide.')]
+    #[Assert\Length(max: 255, maxMessage: 'Le titre ne peut pas dépasser {{ limit }} caractères.')]
+
     private ?string $title = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -35,6 +39,7 @@ class Challenge
     private ?bool $isActive = null;
 
     #[ORM\ManyToOne(inversedBy: 'challenges')]
+    #[Assert\NotNull(message: 'La catégorie est obligatoire.')]
     private ?Category $category = null;
 
     #[ORM\ManyToOne(inversedBy: 'challenges')]

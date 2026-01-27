@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\TypeNotifRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\TypeNotifRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: TypeNotifRepository::class)]
+#[UniqueEntity(fields: ['label'], message: 'Cette type de notification existe déjà')]
+
 class TypeNotif
 {
     #[ORM\Id]
@@ -16,6 +20,9 @@ class TypeNotif
     private ?int $id = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank(message: 'Le label ne peut pas être vide.')]
+    #[Assert\Length(max: 100, maxMessage: 'Le label ne peut pas dépasser {{ limit }} caractères.')]
+
     private ?string $label = null;
 
     /**
