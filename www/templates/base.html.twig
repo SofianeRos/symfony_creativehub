@@ -12,7 +12,9 @@
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-    <body class="bg-main">
+    <body class="bg-bg-main">
+        {% include 'partials/_navbar.html.twig' %}
         {% block body %}{% endblock %}
+        {% include 'partials/_footer.html.twig' %}
     </body>
 </html>
