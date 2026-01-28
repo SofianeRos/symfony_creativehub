@@ -50,6 +50,7 @@
 	<!-- fonctionnalités  -->
 
 	<section id="fonctionnalites" class="section bg-white">
+
 		<div class="container-main">
 			<div class="text-center mb-16">
 				<h2 class="text-4xl text-gray-900 mb-4">Comment ca fonctionne ?</h2>
@@ -70,7 +71,7 @@
 					<h3 class="text-2xl text-gray-900 mb-4">Creez des defis</h3>
 					<p class="text-gray-700 leading-relaxed">
 						Proposez vos propres defis creatifs: dessin,photo,code,mini-projets. 
-																								                partagez vos idees et inspirez la communauté
+																																				                partagez vos idees et inspirez la communauté
 					</p>
 
 				</div>
@@ -102,4 +103,49 @@
 			</div>
 		</section>
 
-	{% endblock %}
+		<!-- categories  -->
+		<section class="section bg-main">
+			<div class="container-main">
+
+				<div class="text-center mb-16">
+					<h2 class="text-4xl text-gray-900 mb-4">Explorez par categories</h2>
+					<p class="text-xl text-gray-600 max-w-2xl mx-auto">
+						Trouvez des defis qui correspondent a vos passions.
+					</p>
+				</div>
+
+				<div
+					class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+					<!-- carte 1 -->
+					<div class="card-hover p-6 text-center">
+						<div class="text-4xl mb-4 ">🎨​</div>
+						<h3 class="text-xl text-gray-900 mb-2">Dessin</h3>
+						<p class="text-gray-600">Defis artistique et creatifs</p>
+					</div>
+                    					<!-- carte 2 -->
+					<div class="card-hover p-6 text-center">
+						<div class="text-4xl mb-4 ">📷​</div>
+						<h3 class="text-xl text-gray-900 mb-2">Photo</h3>
+						<p class="text-gray-600">Defis photographiques et visuels</p>
+					</div>
+
+					<!-- carte 3 -->
+					<div class="card-hover p-6 text-center">
+						<div class="text-4xl mb-4 "> ​🖥️​</div>
+						<h3 class="text-xl text-gray-900 mb-2">Code</h3>
+						<p class="text-gray-600">Defis de programmation et developpement</p>
+					</div>
+
+					<!-- carte 4 -->
+					<div class="card-hover p-6 text-center">
+						<div class="text-4xl mb-4 ">🚀</div>
+						<h3 class="text-xl text-gray-900 mb-2">Projets</h3>
+						<p class="text-gray-600">Mini projets creatifs</p>
+					</div>
+
+
+
+				</div>
+			</section>
+
+		{% endblock %}
