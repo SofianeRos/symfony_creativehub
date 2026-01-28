@@ -16,11 +16,11 @@
 				<a class="link-nav {{ app.request.attributes.get('_route') == 'app_home' ? 'active' : '' }}" href="{{path('app_home')}}">
 					Acceuil</a>
 
-				<a class="link-nav {{ app.request.attributes.get('_route') == 'app_challenge_index' ? 'active' : '' }}" href="#">
+				<a class="link-nav {{ app.request.attributes.get('_route') == 'app_challenge_index' ? 'active' : '' }}" href="{{ path('app_challenge_index') }}">
 					Defis</a>
 
 				{% if app.user %}
-					<a class="link-nav {{ app.request.attributes.get('_route') == 'app_challenge_new' ? 'active' : '' }}" href="#">Creer un defi</a>
+					<a class="link-nav {{ app.request.attributes.get('_route') == 'app_challenge_new' ? 'active' : '' }}" href="{{ path('app_challenge_new') }}">Creer un defi</a>
 
 					{% if is_granted('ROLE_ADMIN') %}
 						<a class="link-nav {{ app.request.attributes.get('_route') == 'app_admin' ? 'active' : '' }}" href="#">Admin Dashboard</a>
@@ -68,7 +68,7 @@
 		<div class="hidden md:hidden" id="mobile-menu">
 			<div class="px-2 pt-2 pb-3 space-y-1 border-t border-gray-200 mt-2">
 				<a href="{{path("app_home")}}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Accueil</a>
-				<a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Defis</a>
+				<a href="{{ path('app_challenge_index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Defis</a>
 				{% if app.user %}
 					<a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Creer un defi</a>
 					<a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Mon profil</a>
