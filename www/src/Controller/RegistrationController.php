@@ -27,6 +27,10 @@ class RegistrationController extends AbstractController
 
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            // on doit renseigner sa date de cration 
+            $user->setCreatedAt(new \DateTime());
+            // on doit activer l'utilisateur 
+            $user->setIsActive(true);
 
             $entityManager->persist($user);
             $entityManager->flush();
