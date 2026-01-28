@@ -1,0 +1,51 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Acceuil - CreativeHub
+{% endblock %}
+
+{% block body %}
+
+	<!-- section hero  -->
+
+	<section class="gradient-hero section">
+		<div class="container-main">
+			<div class="text-center">
+
+				<h1 class="text-5xl md:text-6xl text-gray-900 mb-6">Bienvenue sur CreativeHub</h1>
+				<p class="text-xl md:text-2xl text-gray-600 mb-6 max-w-3xl mx-auto">
+					La plateforme ou la creativité rencontre le defi. partagez vos créations, relevez des défis et inspirez une communauté passionnée
+				</p>
+				<div class="flex flex-col sm:flex-row gap-4 justify-center">
+					{% if not app.user %}
+						<a href="{{ path('app_register') }}" class="btn-primary-xl inline-flex items-center justify-center space-x-2 ">
+							<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24"><path fill="currentColor" d="M15 14c-2.67 0-8 1.33-8 4v2h16v-2c0-2.67-5.33-4-8-4m-9-4V7H4v3H1v2h3v3h2v-3h3v-2m6 2a4 4 0 0 0 4-4a4 4 0 0 0-4-4a4 4 0 0 0-4 4a4 4 0 0 0 4 4"/></svg>
+							<span>Commencez maintenant</span>
+						</a>
+						<a href="#fonctionnalites" class="btn-secondary-lg inline-flex items-center justify-center space-x-2">
+							<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 48 48">
+								<g fill="none"><path fill="#2F88FF" stroke="#000" stroke-linejoin="round" stroke-width="4" d="M24 44C29.5228 44 34.5228 41.7614 38.1421 38.1421C41.7614 34.5228 44 29.5228 44 24C44 18.4772 41.7614 13.4772 38.1421 9.85786C34.5228 6.23858 29.5228 4 24 4C18.4772 4 13.4772 6.23858 9.85786 9.85786C6.23858 13.4772 4 18.4772 4 24C4 29.5228 6.23858 34.5228 9.85786 38.1421C13.4772 41.7614 18.4772 44 24 44Z"/><path fill="#fff" fill-rule="evenodd" d="M24 11C25.3807 11 26.5 12.1193 26.5 13.5C26.5 14.8807 25.3807 16 24 16C22.6193 16 21.5 14.8807 21.5 13.5C21.5 12.1193 22.6193 11 24 11Z" clip-rule="evenodd"/><path stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M24.5 34V20H23.5H22.5"/><path stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M21 34H28"/></g>
+							</svg>
+							<span>En savoir plus</span>
+						</a>
+					{% else %}
+						<a href="#" class="btn-primary-xl inline-flex items-center justify-center space-x-2 ">
+							<svg class="icon-with-text" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 16 16"><path fill="currentColor" d="M12.354 3.646a.5.5 0 0 0-.707 0L6.708 8.585l.707.707l4.939-4.939a.5.5 0 0 0 0-.707m-10.5 4.5a.5.5 0 0 0-.707.707l3 3a.5.5 0 0 0 .708 0l.354-.354l-.707-.707l-2.646-2.646zM7.5 12a.5.5 0 0 1-.354-.146l-3-3a.5.5 0 0 1 .707-.707l2.646 2.646l7.146-7.146a.5.5 0 0 1 .707.707l-7.5 7.5a.5.5 0 0 1-.354.146z"/></svg>
+							<span>Voir les défis</span>
+						</a>
+						<a href="#" class="btn-secondary-lg inline-flex items-center justify-center space-x-2">
+							<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 48 48">
+								<g fill="none" stroke-linejoin="round" stroke-width="4"><rect width="36" height="36" x="6" y="6" fill="#2F88FF" stroke="#000" rx="3"/><path stroke="#fff" stroke-linecap="round" d="M24 16V32"/><path stroke="#fff" stroke-linecap="round" d="M16 24L32 24"/></g>
+							</svg>
+							<span>Créer un défi</span>
+						</a>
+
+					{% endif %}
+
+				</div>
+			</div>
+		</div>
+
+	</section>
+
+
+{% endblock %}
