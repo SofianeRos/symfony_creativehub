@@ -1,1 +1,131 @@
-<h2>HELLO FOOTER</h2>
+<!-- FOOTER -->
+<footer class="bg-white border-t border-gray-200 mt-auto">
+	<div class="container-main py-12">
+		<div
+			class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
+
+			<!-- Logo et description -->
+			<div class="col-span-1 lg:col-span-2 ">
+				<a href="{{path("app_home")}}" class="inline-block mb-4">
+					<img class="h-10 w-auto" src="/images/logo.png" alt="CreativeHub">
+				</a>
+				<p class="text-gray-600 text-sm leading-relaxed max-w-md mb-4">
+					La plateform de challenge creatifs pour les passionnes de creation. Partagez vos projets, inspirez vous et relevez des defis passionnants !
+
+				</p>
+				<div class="flex space-x-4 ">
+					<a href="#" class="text-gray-400 hover:text-gray-600 transition-colors" aria-label="Facebook">
+						<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 14 14">
+							<g fill="none"><path fill="#8fbffa" d="M0 1.077v11.846A1.077 1.077 0 0 0 1.077 14h11.846A1.077 1.077 0 0 0 14 12.923V1.077A1.077 1.077 0 0 0 12.923 0H1.077A1.077 1.077 0 0 0 0 1.077"/><path fill="#2859c5" d="M9.692 8.895V14H7.28V8.895h-.69a.657.657 0 0 1-.667-.657V7.41a.657.657 0 0 1 .668-.657h.689v-1.26a2.498 2.498 0 0 1 2.574-2.8h1.238a.67.67 0 0 1 .646.69v.796a.62.62 0 0 1-.193.464a.59.59 0 0 1-.463.193h-.528c-.41 0-.819 0-.819.905v1.012h.722a.657.657 0 0 1 .657.657v.83a.657.657 0 0 1-.657.656z"/></g>
+						</svg>
+					</a>
+					<a href="#" class="text-gray-400 hover:text-gray-600 transition-colors" aria-label="X">
+						<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24"><path fill="currentColor" d="M17.751 2.96h3.067l-6.7 7.659L22 21.039h-6.172l-4.833-6.32l-5.531 6.32h-3.07l7.167-8.19L2 2.96h6.328l4.37 5.777zm-1.076 16.243h1.7L7.404 4.7H5.58z"/></svg>
+					</a>
+					<a href="#" class="text-gray-400 hover:text-gray-600 transition-colors" aria-label="Instagram">
+						<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 256 256">
+							<g fill="none"><rect width="256" height="256" fill="url(#SVGWRUqebek)" rx="60"/><rect width="256" height="256" fill="url(#SVGfkNpldMH)" rx="60"/><path fill="#fff" d="M128.009 28c-27.158 0-30.567.119-41.233.604c-10.646.488-17.913 2.173-24.271 4.646c-6.578 2.554-12.157 5.971-17.715 11.531c-5.563 5.559-8.98 11.138-11.542 17.713c-2.48 6.36-4.167 13.63-4.646 24.271c-.477 10.667-.602 14.077-.602 41.236s.12 30.557.604 41.223c.49 10.646 2.175 17.913 4.646 24.271c2.556 6.578 5.973 12.157 11.533 17.715c5.557 5.563 11.136 8.988 17.709 11.542c6.363 2.473 13.631 4.158 24.275 4.646c10.667.485 14.073.604 41.23.604c27.161 0 30.559-.119 41.225-.604c10.646-.488 17.921-2.173 24.284-4.646c6.575-2.554 12.146-5.979 17.702-11.542c5.563-5.558 8.979-11.137 11.542-17.712c2.458-6.361 4.146-13.63 4.646-24.272c.479-10.666.604-14.066.604-41.225s-.125-30.567-.604-41.234c-.5-10.646-2.188-17.912-4.646-24.27c-2.563-6.578-5.979-12.157-11.542-17.716c-5.562-5.562-11.125-8.979-17.708-11.53c-6.375-2.474-13.646-4.16-24.292-4.647c-10.667-.485-14.063-.604-41.23-.604zm-8.971 18.021c2.663-.004 5.634 0 8.971 0c26.701 0 29.865.096 40.409.575c9.75.446 15.042 2.075 18.567 3.444c4.667 1.812 7.994 3.979 11.492 7.48c3.5 3.5 5.666 6.833 7.483 11.5c1.369 3.52 3 8.812 3.444 18.562c.479 10.542.583 13.708.583 40.396s-.104 29.855-.583 40.396c-.446 9.75-2.075 15.042-3.444 18.563c-1.812 4.667-3.983 7.99-7.483 11.488c-3.5 3.5-6.823 5.666-11.492 7.479c-3.521 1.375-8.817 3-18.567 3.446c-10.542.479-13.708.583-40.409.583c-26.702 0-29.867-.104-40.408-.583c-9.75-.45-15.042-2.079-18.57-3.448c-4.666-1.813-8-3.979-11.5-7.479s-5.666-6.825-7.483-11.494c-1.369-3.521-3-8.813-3.444-18.563c-.479-10.542-.575-13.708-.575-40.413s.096-29.854.575-40.396c.446-9.75 2.075-15.042 3.444-18.567c1.813-4.667 3.983-8 7.484-11.5s6.833-5.667 11.5-7.483c3.525-1.375 8.819-3 18.569-3.448c9.225-.417 12.8-.542 31.437-.563zm62.351 16.604c-6.625 0-12 5.37-12 11.996c0 6.625 5.375 12 12 12s12-5.375 12-12s-5.375-12-12-12zm-53.38 14.021c-28.36 0-51.354 22.994-51.354 51.355s22.994 51.344 51.354 51.344c28.361 0 51.347-22.983 51.347-51.344c0-28.36-22.988-51.355-51.349-51.355zm0 18.021c18.409 0 33.334 14.923 33.334 33.334c0 18.409-14.925 33.334-33.334 33.334s-33.333-14.925-33.333-33.334c0-18.411 14.923-33.334 33.333-33.334"/><defs>
+									<radialGradient id="SVGWRUqebek" cx="0" cy="0" r="1" gradienttransform="matrix(0 -253.715 235.975 0 68 275.717)" gradientunits="userSpaceOnUse"><stop stop-color="#FD5"/><stop offset=".1" stop-color="#FD5"/><stop offset=".5" stop-color="#FF543E"/><stop offset="1" stop-color="#C837AB"/></radialGradient>
+									<radialGradient id="SVGfkNpldMH" cx="0" cy="0" r="1" gradienttransform="matrix(22.25952 111.2061 -458.39518 91.75449 -42.881 18.441)" gradientunits="userSpaceOnUse"><stop stop-color="#3771C8"/><stop offset=".128" stop-color="#3771C8"/><stop offset="1" stop-color="#60F" stop-opacity="0"/></radialGradient>
+								</defs>
+							</g>
+						</svg>
+					</a>
+
+				</div>
+			</div>
+			<!-- Navigation -->
+			<div>
+				<h4 class="text-gray-900 font-semibold mb-4 text-sm uppercase tracking-wider">Navigation</h4>
+				<ul class="space-y-3">
+					<li>
+						<a class="link-footer flex items-center space-x-2" href="{{path('app_home')}}">
+							<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24"><path fill="currentColor" d="m23.71 11.29l-3.14-3.13A.3.3 0 0 1 20.5 8V2a1 1 0 0 0-1-1h-3a1 1 0 0 0-1 1v.48a.25.25 0 0 1-.15.23a.26.26 0 0 1-.28 0L12.71.29a1 1 0 0 0-1.42 0l-11 11a1 1 0 0 0-.21 1.09A1 1 0 0 0 1 13h1.25a.25.25 0 0 1 .25.25V23a1 1 0 0 0 1 1h17a1 1 0 0 0 1-1v-9.75a.25.25 0 0 1 .25-.25H23a1 1 0 0 0 .92-.62a1 1 0 0 0-.21-1.09"/></svg>
+							<span>Accueil</span>
+						</a>
+					</li>
+					<li>
+						<a class="link-footer flex items-center space-x-2" href="#">
+							<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 16 16"><path fill="currentColor" fill-rule="evenodd" d="M15 8c0 .982-.472 1.854-1.202 2.402a3 3 0 0 1-.848 2.547a3 3 0 0 1-2.548.849A3 3 0 0 1 8 15a3 3 0 0 1-2.402-1.202a3 3 0 0 1-2.547-.848a3 3 0 0 1-.849-2.548A3 3 0 0 1 1 8c0-.982.472-1.854 1.202-2.402a3 3 0 0 1 .848-2.547a3 3 0 0 1 2.548-.849A3 3 0 0 1 8 1c.982 0 1.854.472 2.402 1.202a3 3 0 0 1 2.547.848c.695.695.978 1.645.849 2.548A3 3 0 0 1 15 8m-3.291-2.843a.75.75 0 0 1 .135 1.052l-4.25 5.5a.75.75 0 0 1-1.151.043l-2.25-2.5a.75.75 0 1 1 1.114-1.004l1.65 1.832l3.7-4.789a.75.75 0 0 1 1.052-.134" clip-rule="evenodd"/></svg>
+							<span>Defis</span>
+						</a>
+					</li>
+					{% if app.user %}
+						<li>
+							<a class="link-footer flex items-center space-x-2" href="#">
+								<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24"><path fill="currentColor" d="M6 22q-.825 0-1.412-.587T4 20V4q0-.825.588-1.412T6 2h12q.825 0 1.413.588T20 4v16q0 .825-.587 1.413T18 22zm5-11l2.5-1.5L16 11V4h-5z"/></svg>
+								<span>Mes defis</span>
+							</a>
+						</li>
+
+					{% endif %}
+
+
+				</ul>
+			</div>
+
+
+			<!-- compte -->
+			<div>
+				<h4 class="text-gray-900 font-semibold mb-4 text-sm uppercase tracking-wider">Compte</h4>
+				<ul class="space-y-3">
+					{% if app.user %}
+						<li>
+							<a class="link-footer flex items-center space-x-2" href="#">
+								<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24"><path fill="currentColor" d="M16 10c0 2.21-1.79 4-4 4s-4-1.79-4-4s1.79-4 4-4s4 1.79 4 4"/><path fill="currentColor" fill-rule="evenodd" d="M12 24c6.63 0 12-5.37 12-12S18.63 0 12 0S0 5.37 0 12s5.37 12 12 12m6.27-2.96C21.13 19.05 23 15.75 23 12c0-6.08-4.92-11-11-11S1 5.92 1 12c0 3.75 1.87 7.05 4.73 9.04C6.435 19.72 8.71 16 12 16s5.56 3.72 6.27 5.04" clip-rule="evenodd"/></svg>
+								<span>Mon profil</span>
+							</a>
+						</li>
+
+						<li>
+							<a class="link-footer flex items-center space-x-2" href="{{ path('app_logout') }}">
+								<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24">
+									<g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><path d="M13.5 12.5h10m-4-4l4 4l-4 4M7 11l-1.5 1.5L7 14l1.499-1.5zm9.5 4.5v6h-6m0-18h6v6"/><path d="m10.5 23.5l-10-2v-18l10-2z"/></g>
+								</svg>
+								<span>Deconnexion</span>
+							</a>
+						</li>
+
+					{% else %}
+
+						<li>
+							<a class="link-footer flex items-center space-x-2" href="{{ path('app_login') }}">
+								<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24"><path fill="currentColor" d="M6.25 2A2.25 2.25 0 0 0 4 4.25v15.5A2.25 2.25 0 0 0 6.25 22h6.56a6.5 6.5 0 0 1-1.078-1.5H6.25a.75.75 0 0 1-.75-.75V4.25a.75.75 0 0 1 .75-.75h11.5a.75.75 0 0 1 .75.75v6.826a6.5 6.5 0 0 1 1.5.422V4.25A2.25 2.25 0 0 0 17.75 2zM17.5 23a5.5 5.5 0 1 0 0-11a5.5 5.5 0 0 0 0 11m3.5-5.5a.5.5 0 0 1-.5.5h-4.793l1.647 1.646a.5.5 0 0 1-.708.708l-2.5-2.5a.5.5 0 0 1 0-.708l2.5-2.5a.5.5 0 0 1 .708.708L15.707 17H20.5a.5.5 0 0 1 .5.5M8.5 13.25a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3"/></svg>
+								<span>Connexion</span>
+							</a>
+						</li>
+
+						<li>
+							<a class="link-footer flex items-center space-x-2" href="{{ path('app_register') }}">
+								<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24"><path fill="currentColor" d="M15 14c-2.67 0-8 1.33-8 4v2h16v-2c0-2.67-5.33-4-8-4m-9-4V7H4v3H1v2h3v3h2v-3h3v-2m6 2a4 4 0 0 0 4-4a4 4 0 0 0-4-4a4 4 0 0 0-4 4a4 4 0 0 0 4 4"/></svg>
+								<span>S'inscrire</span>
+							</a>
+						</li>
+
+
+					{% endif %}
+
+				</ul>
+			</div>
+
+
+		</div>
+		<!-- RGPD et Copyright -->
+
+		<div class="pt-8 border-t border-gray-200 ">
+			<div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+				<p class="text-gray-500 text-sm">
+					&copy;
+					{{ "now"|date("Y") }}
+					CreativeHub. Tous droits reservés.
+				</p>
+				<div class="flex items-center space-x-6 text-sm text-gray-500">
+					<a class="hover:text-gray-900 transition-colors" href="#">Mentions Legales</a>
+					<a class="hover:text-gray-900 transition-colors" href="#">CGU</a>
+					<a class="hover:text-gray-900 transition-colors" href="#">Politique de confidentialité</a>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</footer>
