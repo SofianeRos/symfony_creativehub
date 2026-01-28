@@ -18,7 +18,7 @@ final class ChallengeController extends AbstractController
     public function index(ChallengeRepository $challengeRepository): Response
     {
         return $this->render('challenge/index.html.twig', [
-            'challenges' => $challengeRepository->findAll(),
+            'challenges' => $challengeRepository->findBy(['isActive' => true]),
         ]);
     }
 
