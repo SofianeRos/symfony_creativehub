@@ -96,13 +96,28 @@ final class ChallengeController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_challenge_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_challenge_delete', methods: ['POST'])]
     public function delete(Request $request, Challenge $challenge, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $challenge->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($challenge);
-            $entityManager->flush();
+        //! Verifier que l'utilisateur est bin l'auteur du defi
+        if ($challenge->getUser() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', "Vous n'avez pas l'autorisation de supprimer ce défi.");
+            return $this->redirectToRoute('app_challenge_show', ['id' => $challenge->getId()], Response::HTTP_FORBIDDEN);
+
         }
+        //! Verifier le token CSRF
+        $token = $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('delete_challenge_' . $challenge->getId(), $token)) {
+            $this->addFlash('error', 'Tokken CSRF invalide.');
+            return $this->redirectToRoute('app_challenge_show', ['id' => $challenge->getId()], Response::HTTP_FORBIDDEN);
+            
+        }
+
+        //! Soft delete : desactiver le defi
+        $challenge->setIsActive(false);
+        $challenge->setUpdatedAt(new \DateTime());
+        $entityManager->flush();
+        $this->addFlash('success', 'Défi supprimé avec succès.');
 
         return $this->redirectToRoute('app_challenge_index', [], Response::HTTP_SEE_OTHER);
     }
