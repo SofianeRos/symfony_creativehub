@@ -17,8 +17,21 @@ final class ChallengeController extends AbstractController
     #[Route(name: 'app_challenge_index', methods: ['GET'])]
     public function index(ChallengeRepository $challengeRepository): Response
     {
+        $challenges = $challengeRepository->findAllWithFilters();
+
+        //! Compter les votes et commentaires pour chaque challenge
+        $challengeStat = [];
+        foreach ($challenges as $challenge) {
+            $challengeStat[$challenge->getId()] = [
+                'voteCount' => $challenge->getVotes()->count(),
+                'commentCount' => $challenge->getComments()->count(),
+            ];
+            
+        }
+
         return $this->render('challenge/index.html.twig', [
-            'challenges' => $challengeRepository->findBy(['isActive' => true]),
+            'challenges' => $challenges,
+            'challengeStat' => $challengeStat,
         ]);
     }
 
@@ -71,7 +84,7 @@ final class ChallengeController extends AbstractController
     #[Route('/{id}', name: 'app_challenge_delete', methods: ['POST'])]
     public function delete(Request $request, Challenge $challenge, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$challenge->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $challenge->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($challenge);
             $entityManager->flush();
         }

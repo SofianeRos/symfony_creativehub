@@ -1,45 +1,119 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Challenge index{% endblock %}
+{% block title %}Défis - CreativeHub
+{% endblock %}
 
 {% block body %}
-    <h1>Challenge index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>Deadline</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>IsActive</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for challenge in challenges %}
-            <tr>
-                <td>{{ challenge.id }}</td>
-                <td>{{ challenge.title }}</td>
-                <td>{{ challenge.description }}</td>
-                <td>{{ challenge.deadline ? challenge.deadline|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ challenge.createdAt ? challenge.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ challenge.updatedAt ? challenge.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ challenge.isActive ? 'Yes' : 'No' }}</td>
-                <td>
-                    <a href="{{ path('app_challenge_show', {'id': challenge.id}) }}">show</a>
-                    <a href="{{ path('app_challenge_edit', {'id': challenge.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="8">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	<div class="min-h-screen bg-main py-8">
+		<div
+			class="container-main">
+			<!-- En tete de la page -->
+			<div class="mb-8">
+				<h1 class="text-4xl text-gray-900 mb-2">Tous les defis</h1>
+				<p class="text-gray-600">Découvrez et participez  aux defis creatifs de la communauté
+				</p>
+			</div>
+			<!-- Liste des challenges -->
+			{% if challenges|length > 0 %}
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+					{% for challenge in challenges %}
+						<div
+							class="card-hover overflow-hidden flex flex-col ">
+							<!-- Images du challenge -->
+							<a class="block" href="{{path('app_challenge_show', {id: challenge.id}) }}">
+								{% if challenge.medias|length > 0 %}
 
-    <a href="{{ path('app_challenge_new') }}">Create new</a>
+									<img class="w-full h-48 object-cover" src="{{challenge.medias.first.path}}" alt="{{challenge.title}}">
+								{% else %}
+									<div class="w-full h-48 gradient-placeholder flex items-center justify-center">
+
+										<svg class="w-16 h-16 text-primary" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24"><path fill="currentColor" d="M15.85 13H19V7h-8v1.15l2 2V9h4v2h-3.15zM20 17.15V6H8.85l-2-2H22v15.15zm.45 6.15l-3.3-3.3H2V4h2l2 2H4v12h11.15L.65 3.5l1.425-1.425l19.8 19.8z"/></svg>
+
+									</div>
+								{% endif %}
+							</a>
+
+							<!-- Contenu de la cxarte-->
+
+							<div
+								class="p-6 flex flex-col flex-1">
+								<!-- Categorie -->
+								<div class="mb-3">
+									<span class="badge-category-sm">
+										{{challenge.category.label}}
+									</span>
+								</div>
+								<!-- Titre -->
+								<h3 class="text-xl text-gray-900 mb-2 line-clamp-2">
+									<a class="link-nav transition-all duration-200 hover:underline" href="{{path('app_challenge_show', {id: challenge.id}) }}">
+										{{challenge.title}}
+									</a>
+								</h3>
+
+								<!-- Description -->
+								<p class="text-gray-600 text-sm mb-4 line-clamp-3 flex-1">
+									{{challenge.description|default("pas de description")}}
+								</p>
+
+								<!-- information -->
+								<div class="flex items-center justify-between text-sm text-gray-500 mb-4 mt-auto">
+									<div class="flex items-center space-x-4 ">
+										<span class="flex items-center ">
+											<svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24">
+												<path fill="currentColor" fill-opacity="0" d="M12 8c0 0 0 0 0.76 -1c0.88 -1.16 2.18 -2 3.74 -2c2.49 0 4.5 2.01 4.5 4.5c0 0.93 -0.28 1.79 -0.76 2.5c-0.81 1.21 -8.24 9 -8.24 9c0 0 -7.43 -7.79 -8.24 -9c-0.48 -0.71 -0.76 -1.57 -0.76 -2.5c0 -2.49 2.01 -4.5 4.5 -4.5c1.56 0 2.87 0.84 3.74 2c0.76 1 0.76 1 0.76 1Z"><animate fill="freeze" attributename="fill-opacity" begin="0.6s" dur="0.4s" to="1"/></path>
+												<path fill="none" stroke="currentColor" stroke-dasharray="30" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c0 0 0 0 -0.76 -1c-0.88 -1.16 -2.18 -2 -3.74 -2c-2.49 0 -4.5 2.01 -4.5 4.5c0 0.93 0.28 1.79 0.76 2.5c0.81 1.21 8.24 9 8.24 9M12 8c0 0 0 0 0.76 -1c0.88 -1.16 2.18 -2 3.74 -2c2.49 0 4.5 2.01 4.5 4.5c0 0.93 -0.28 1.79 -0.76 2.5c-0.81 1.21 -8.24 9 -8.24 9"><animate fill="freeze" attributename="stroke-dashoffset" dur="0.6s" values="30;0"/></path>
+											</svg>
+											{{challengeStat[challenge.id].voteCount}}
+											vote{{ challengeStat[challenge.id].voteCount > 1 ? 's' : '' }}
+										</span>
+										<span class="flex items-center ">
+											<svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 20 20"><path fill="currentColor" d="M6.799 17.803a1.01 1.01 0 0 1-1.4-.199a.98.98 0 0 1-.199-.59v-2.172h-.6c-1.436 0-2.6-1.149-2.6-2.566v-6.71C2 4.149 3.164 3 4.6 3h10.8C16.836 3 18 4.149 18 5.566v6.71c0 1.418-1.164 2.566-2.6 2.566h-4.59z"/></svg>
+											{{challengeStat[challenge.id].commentCount}}
+											commentaire{{ challengeStat[challenge.id].commentCount > 1 ? 's' : '' }}
+										</span>
+
+									</div>
+								</div>
+
+								<!-- Auteur et date -->
+								<div class="flex items-center justify-between pt-4 border-t border-gray-200">
+									<div class="flex items-center">
+										<div class="avatar-sm mr-2">
+											<span class="avatar-initial-sm">
+												{{ challenge.user.pseudo|slice(0,1)|upper }}
+											</span>
+										</div>
+										<span class="flex-sm flex-gray-700">
+											{{ challenge.user.pseudo }}
+										</span>
+									</div>
+                                    <span class="text-xs text-gray-500">
+                                        Publié le {{ challenge.createdAt|date('d/m/Y') }}
+                                    </span>
+								</div>
+
+                                <!-- deadline si presente -->
+                                
+                                    <div class="mt-3 pt-3 border-t border-gray-100 ">
+                                        <span class=" text-xs text-red-500 font-medium">
+                                        ⏰​ Date limite : {{challenge.deadline ? challenge.deadline|date('d/m/Y h:i:s') : 'Pas de date limite '}}
+                                        </span>
+                                    </div>
+                                
+                                
+							</div>
+						</div>
+
+					{% endfor %}
+
+				</div>
+				{% else %}
+
+			{% endif %}
+
+		</div>
+
+	</div>
+
 {% endblock %}
