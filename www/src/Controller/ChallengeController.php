@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Challenge;
 use App\Form\ChallengeType;
+use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,9 +16,20 @@ use Symfony\Component\Routing\Attribute\Route;
 final class ChallengeController extends AbstractController
 {
     #[Route(name: 'app_challenge_index', methods: ['GET'])]
-    public function index(ChallengeRepository $challengeRepository): Response
+    public function index(ChallengeRepository $challengeRepository, CategoryRepository $categoryRepository, Request $request): Response
     {
-        $challenges = $challengeRepository->findAllWithFilters();
+        //! recuperation des parametres de tri et filtre soumis par l'utilisateur
+        $categoryId =  $request->query->getInt('category', 0);
+        $sortBy =  $request->query->get('sort', 'recent');
+
+
+        //! recuperation de toutes les categories pour pouvoir les afficher dans le filtre
+        $categories = $categoryRepository->findAll();
+        $this->addFlash('categories', $categories);
+
+
+        //! recuperation des challlenges avec possibilites de filtres
+        $challenges = $challengeRepository->findAllWithFilters($categoryId, $sortBy);
 
         //! Compter les votes et commentaires pour chaque challenge
         $challengeStat = [];
@@ -32,6 +44,9 @@ final class ChallengeController extends AbstractController
         return $this->render('challenge/index.html.twig', [
             'challenges' => $challenges,
             'challengeStat' => $challengeStat,
+            'categories' => $categories,
+            'selectCategory' => $categoryId,
+            'selectSort' => $sortBy,
         ]);
     }
 
