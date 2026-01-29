@@ -4,119 +4,118 @@
 {% endblock %}
 
 {% block body %}
-
 	<div class="min-h-screen bg-main py-8">
-		<div
-			class="container-main">
-			<!-- En tete de la page -->
+		<div class="container-main">
+			{% include "partials/_messages.html.twig" %}
+			<!-- En tête -->
 			<div class="mb-8">
-				<h1 class="text-4xl text-gray-900 mb-2">Tous les defis</h1>
-				<p class="text-gray-600">Découvrez et participez  aux defis creatifs de la communauté
-				</p>
+				<h1 class="text-4xl text-gray-900 mb-2">Tous les défis</h1>
+				<p class="text-gray-600">Découvrez et participez aux défis créatifs de la communauté.</p>
 			</div>
 
-
-			<!-- systeme de tri et filtre-->
-
-			<div class="card-sm p-6 mb-8 ">
+			{# systeme de tri et filtre  #}
+			<div class="card-sm p-6 mb-8">
 				<form class="flex flex-col md:flex-row gap-4" action="{{ path('app_challenge_index') }}" method="get">
 					<div
 						class="flex-1">
-						<!-- filtre de categorie -->
+						{# filtre de categorie #}
 						<label for="category" class="form-label">
-							Catégorie :
+							Catégorie
 						</label>
 						<select name="category" id="category" class="form-select" onchange="this.form.submit()">
-							<option value="0" {{ selectCategory == 0 ? 'selected' : '' }}>Toutes les categories</option>
+							<option value="0" {{ selectCategory == 0 ? 'selected' : '' }}>Toutes les catégories</option>
 							{% for category in categories %}
-								<option value="{{category.id}}" {{ selectCategory == category.id ? 'selected' : '' }}>{{category.label}}</option>
+								<option value="{{ category.id }}" {{ selectCategory == category.id ? 'selected' : '' }}>
+									{{ category.label }}
+								</option>
 							{% endfor %}
 						</select>
 					</div>
 					<div
 						class="flex-1">
-						<!-- option de tri -->
-						<label for="sort" class="form-label">Trier par :</label>
+						{# tri #}
+						<label class="form-label" for="sort">Trier par</label>
 						<select name="sort" id="sort" class="form-select" onchange="this.form.submit()">
-							<option value="recent" {{ selectSort == 'recent' ? 'selected' : '' }}>Les plus récents</option>
-							<option value="popular" {{ selectSort == 'popular' ? 'selected' : '' }}>Les plus votés</option>
-							<option value="oldest" {{ selectSort == 'oldest' ? 'selected' : '' }}>Les plus anciens</option>
+							<option value="recent" {{ selectSort == 'recent' ? 'selected' : '' }}>Plus récents</option>
+							<option value="popular" {{ selectSort == 'popular' ? 'selected' : '' }}>Plus populaires</option>
+							<option value="oldest" {{ selectSort == 'oldest' ? 'selected' : '' }}>Plus anciens</option>
 						</select>
 					</div>
-					<!-- Bouton de reinitialisation -->
+
+					{# bouton de reinitialisation  #}
 					{% if selectCategory != 0 or selectSort != 'recent' %}
 						<div class="flex items-end">
-							<a href="{{path('app_challenge_index')}}" class="px-4 py-2 transition-colors link-nav">Réinitialiser</a>
+							<a href="{{ path('app_challenge_index') }}" class="px-4 py-2 transition-colors link-nav">
+								Réinitialiser
+							</a>
 						</div>
 					{% endif %}
 
 				</form>
 			</div>
 
-
 			<!-- Liste des challenges -->
 			{% if challenges|length > 0 %}
 				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 					{% for challenge in challenges %}
 						<div
-							class="card-hover overflow-hidden flex flex-col ">
-							<!-- Images du challenge -->
-							<a class="block" href="{{path('app_challenge_show', {id: challenge.id}) }}">
+							class="card-hover overflow-hidden flex flex-col">
+							<!-- Image du challenge -->
+							<a class="block" href="{{ path('app_challenge_show', {id: challenge.id}) }}">
 								{% if challenge.medias|length > 0 %}
-
-									<img class="w-full h-48 object-cover" src="{{challenge.medias.first.path}}" alt="{{challenge.title}}">
+									<img class="w-full h-48 object-cover" src="{{ challenge.medias.first.path }}" alt="{{ challenge.title }}">
 								{% else %}
 									<div class="w-full h-48 gradient-placeholder flex items-center justify-center">
-
-										<svg class="w-16 h-16 text-primary" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24"><path fill="currentColor" d="M15.85 13H19V7h-8v1.15l2 2V9h4v2h-3.15zM20 17.15V6H8.85l-2-2H22v15.15zm.45 6.15l-3.3-3.3H2V4h2l2 2H4v12h11.15L.65 3.5l1.425-1.425l19.8 19.8z"/></svg>
-
+										<svg class="w-16 h-16 text-primary" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+											<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+										</svg>
 									</div>
 								{% endif %}
 							</a>
 
-							<!-- Contenu de la cxarte-->
-
+							<!-- contenu de la carte -->
 							<div
 								class="p-6 flex flex-col flex-1">
-								<!-- Categorie -->
+								<!-- categorie -->
 								<div class="mb-3">
 									<span class="badge-category-sm">
-										{{challenge.category.label}}
+										{{ challenge.category.label }}
 									</span>
 								</div>
-								<!-- Titre -->
+
+								<!-- titre -->
 								<h3 class="text-xl text-gray-900 mb-2 line-clamp-2">
-									<a class="link-nav transition-all duration-200 hover:underline" href="{{path('app_challenge_show', {id: challenge.id}) }}">
-										{{challenge.title}}
+									<a class="link-nav transition-all duration-200 hover:underline" href="{{ path('app_challenge_show', {id: challenge.id}) }}">
+										{{ challenge.title }}
 									</a>
 								</h3>
 
-								<!-- Description -->
+								<!-- description -->
 								<p class="text-gray-600 text-sm mb-4 line-clamp-3 flex-1">
-									{{challenge.description|default("pas de description")}}
+									{{ challenge.description|default("Pas de descption") }}
 								</p>
 
-								<!-- information -->
+								{# informations #}
 								<div class="flex items-center justify-between text-sm text-gray-500 mb-4 mt-auto">
-									<div class="flex items-center space-x-4 ">
-										<span class="flex items-center ">
-											<svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24">
-												<path fill="currentColor" fill-opacity="0" d="M12 8c0 0 0 0 0.76 -1c0.88 -1.16 2.18 -2 3.74 -2c2.49 0 4.5 2.01 4.5 4.5c0 0.93 -0.28 1.79 -0.76 2.5c-0.81 1.21 -8.24 9 -8.24 9c0 0 -7.43 -7.79 -8.24 -9c-0.48 -0.71 -0.76 -1.57 -0.76 -2.5c0 -2.49 2.01 -4.5 4.5 -4.5c1.56 0 2.87 0.84 3.74 2c0.76 1 0.76 1 0.76 1Z"><animate fill="freeze" attributename="fill-opacity" begin="0.6s" dur="0.4s" to="1"/></path>
-												<path fill="none" stroke="currentColor" stroke-dasharray="30" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c0 0 0 0 -0.76 -1c-0.88 -1.16 -2.18 -2 -3.74 -2c-2.49 0 -4.5 2.01 -4.5 4.5c0 0.93 0.28 1.79 0.76 2.5c0.81 1.21 8.24 9 8.24 9M12 8c0 0 0 0 0.76 -1c0.88 -1.16 2.18 -2 3.74 -2c2.49 0 4.5 2.01 4.5 4.5c0 0.93 -0.28 1.79 -0.76 2.5c-0.81 1.21 -8.24 9 -8.24 9"><animate fill="freeze" attributename="stroke-dashoffset" dur="0.6s" values="30;0"/></path>
+									<div class="flex items-center space-x-4">
+										<span class="flex items-center">
+											<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
 											</svg>
-											{{challengeStat[challenge.id].voteCount}}
+											{{ challengeStat[challenge.id].voteCount }}
 											vote{{ challengeStat[challenge.id].voteCount > 1 ? 's' : '' }}
 										</span>
-										<span class="flex items-center ">
-											<svg class="w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 20 20"><path fill="currentColor" d="M6.799 17.803a1.01 1.01 0 0 1-1.4-.199a.98.98 0 0 1-.199-.59v-2.172h-.6c-1.436 0-2.6-1.149-2.6-2.566v-6.71C2 4.149 3.164 3 4.6 3h10.8C16.836 3 18 4.149 18 5.566v6.71c0 1.418-1.164 2.566-2.6 2.566h-4.59z"/></svg>
-											{{challengeStat[challenge.id].commentCount}}
+										<span class="flex items-center">
+											<svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+												<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+											</svg>
+											{{ challengeStat[challenge.id].commentCount }}
 											commentaire{{ challengeStat[challenge.id].commentCount > 1 ? 's' : '' }}
 										</span>
-
 									</div>
 								</div>
 
-								<!-- Auteur et date -->
+								{# auteur et date #}
 								<div class="flex items-center justify-between pt-4 border-t border-gray-200">
 									<div class="flex items-center">
 										<div class="avatar-sm mr-2">
@@ -124,58 +123,58 @@
 												{{ challenge.user.pseudo|slice(0,1)|upper }}
 											</span>
 										</div>
-										<span class="flex-sm flex-gray-700">
+										<span class="text-sm text-gray-700">
 											{{ challenge.user.pseudo }}
 										</span>
 									</div>
 									<span class="text-xs text-gray-500">
-										Publié le
 										{{ challenge.createdAt|date('d/m/Y') }}
 									</span>
 								</div>
 
-								<!-- deadline si presente -->
+								{# Deadline si presente #}
 
-								<div class="mt-3 pt-3 border-t border-gray-100 ">
-									<span class=" text-xs text-red-500 font-medium">
-										⏰​ Date limite :
-										{{challenge.deadline ? challenge.deadline|date('d/m/Y h:i:s') : 'Pas de date limite '}}
+								<div class="mt-3 pt-3 border-t border-gray-100">
+									<span class="text-xs text-orange-600 font-medium flex items-center">
+										⏰​ Deadline:
+										{{ challenge.deadline ? challenge.deadline|date('d/m/Y') : '<svg class="w-5 h-5 ml-3" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m14 9l-.25.375M10 9a5 5 0 1 0 0 6l.334-.5M10 9l4 6a5 5 0 1 0 0-6"/></svg> '}}
 									</span>
 								</div>
 
 
 							</div>
 						</div>
-
 					{% endfor %}
-
 				</div>
 			{% else %}
-				<!-- Message si aucun challenge disponible -->
+				{# message si aucun challenge #}
 				<div class="card-sm p-12 text-center">
-					<svg class="w-16 h-16 text-gray-400 mx-auto mb-4" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 16 16"><circle cx="6" cy="6" r="1" fill="currentColor"/><circle cx="10" cy="6" r="1" fill="currentColor"/><path fill="currentColor" d="M8 15c-3.86 0-7-3.14-7-7s3.14-7 7-7s7 3.14 7 7s-3.14 7-7 7M8 2C4.69 2 2 4.69 2 8s2.69 6 6 6s6-2.69 6-6s-2.69-6-6-6"/><path fill="currentColor" d="M10.83 11.5c-.21 0-.4-.13-.47-.33a2.502 2.502 0 0 0-4.72 0c-.09.26-.38.4-.64.3a.493.493 0 0 1-.3-.64C5.19 9.43 6.52 8.5 8 8.5s2.81.94 3.3 2.33a.5.5 0 0 1-.47.67"/></svg>
-					<h3 class="text-xl font-semibold text-gray-900 mb-2">
-						Aucun defi trouvé</h3>
+					<svg class="w-16 h-16 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+						<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+					</svg>
+
+					<h3 class="text-xl font-semibold text-gray-900 mb-2">Aucun défi trouvé.</h3>
 					<p class="text-gray-600 mb-6">
 						{% if selectCategory != 0 %}
-							Aucun defi dans la catégorie sélectionnée.
+							Aucun défi dans cette catégorie pour le moment.
 						{% else %}
-							Aucun defi pour le moment.
+							Aucun défi pour le moment.
 						{% endif %}
-
 					</p>
-                    {% if app.user %}
-                        <a class="btn-primary-lg inline-flex items-center space-x-2" href="{{path('app_challenge_new')}}">
-                        <svg class="icon-with-text" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 20 20"><path fill="currentColor" d="M11 9V5H9v4H5v2h4v4h2v-4h4V9zm-1 11a10 10 0 1 1 0-20a10 10 0 0 1 0 20"/></svg>
-                        <span>Creer le premier defi</span>
-                        </a>
-                    {% endif %}
-                    
+					{% if app.user %}
+						<a class="btn-primary-lg inline-flex items-center space-x-2" href="{{ path('app_challenge_new') }}">
+							<svg class="icon-with-text" fill="none" stroke="currentColor" viewbox="0 0 24 24" stroke-width="2">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path>
+							</svg>
+							<span>Créer le premier défi</span>
+						</a>
+					{% endif %}
+
 				</div>
+
 			{% endif %}
 
 		</div>
-
 	</div>
 
 {% endblock %}

@@ -7,80 +7,69 @@
 
 {% block body %}
 	<div class="min-h-screen bg-main py-8">
-		<div
-			class="container-medium">
-			<!-- Message flash -->
-			{% for label, messages in app.flashes %}
-				{% for message in messages %}
-					<div class="{{ label == 'success' ? 'alert-success' : 'alert-error' }} mb-6">
-						<div class="flex">
-							<div class="shrink-0">
-								<svg class="icon text-{{ label == 'success' ? 'green' : 'red' }}-400" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-									{% if label == 'success' %}
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-									{% else %}
-										<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-									{% endif %}
-								</svg>
-							</div>
-							<div class="ml-3">
-								<p class="text-sm text-{{ label == 'success' ? 'green' : 'red' }}-500">
-									{{ message }}
-								</p>
-							</div>
-						</div>
-					</div>
-				{% endfor %}
-			{% endfor %}
+		<div class="container-medium">
+			{% include "partials/_messages.html.twig" %}
 
-			<!-- bouton retour  -->
-			<a class="link-nav inline-flex items-center mb-6" href="{{path('app_challenge_index')}}">
-				<svg class="icon-sm mr-2" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24">
-					<g fill="none" fill-rule="evenodd"><path d="M24 0v24H0V0zM12.593 23.258l-.011.002l-.071.035l-.02.004l-.014-.004l-.071-.035q-.016-.005-.024.005l-.004.01l-.017.428l.005.02l.01.013l.104.074l.015.004l.012-.004l.104-.074l.012-.016l.004-.017l-.017-.427q-.004-.016-.017-.018m.265-.113l-.013.002l-.185.093l-.01.01l-.003.011l.018.43l.005.012l.008.007l.201.093q.019.005.029-.008l.004-.014l-.034-.614q-.005-.019-.02-.022m-.715.002a.02.02 0 0 0-.027.006l-.006.014l-.034.614q.001.018.017.024l.015-.002l.201-.093l.01-.008l.004-.011l.017-.43l-.003-.012l-.01-.01z"/><path fill="currentColor" d="M8.293 12.707a1 1 0 0 1 0-1.414l5.657-5.657a1 1 0 1 1 1.414 1.414L10.414 12l4.95 4.95a1 1 0 0 1-1.414 1.414z"/></g>
+			{# Bouton retour #}
+			<a class="link-nav inline-flex items-center mb-6" href="{{ path('app_challenge_index') }}">
+				<svg class="icon-sm mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24" stroke-width="2">
+					<path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
 				</svg>
-				<span>Retour aux defis</span>
+				<span>Retour aux défis</span>
 			</a>
 
-			<!-- carte principale du challenge -->
+			{# carte principale du challenge #}
 			<div
 				class="card overflow-hidden mb-8">
-				<!-- Image du challenge -->
+				{# image #}
 				{% if challenge.medias|length > 0 %}
-					<img src="{{ challenge.medias.first.path }}" alt="{{ challenge.title }}" class="w-full h-96 object-cover">
+					<img class="w-full h-96 object-cover" src="{{ challenge.medias.first.path }}" alt="{{ challenge.title }}">
 				{% else %}
 					<div class="w-full h-96 gradient-placeholder flex items-center justify-center">
-						<svg class="w-24 h-24 text-primary" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24"><path fill="currentColor" d="M15.85 13H19V7h-8v1.15l2 2V9h4v2h-3.15zM20 17.15V6H8.85l-2-2H22v15.15zm.45 6.15l-3.3-3.3H2V4h2l2 2H4v12h11.15L.65 3.5l1.425-1.425l19.8 19.8z"/></svg>
-
-
+						<svg class="w-24 h-24 text-primary" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+						</svg>
 					</div>
 				{% endif %}
 
 				<div
 					class="p-8">
-					<!-- en tete -->
+					{# en tête #}
 					<div class="flex items-center justify-between">
 						<span class="badge-category">
 							{{ challenge.category.label }}
 						</span>
-						{% if app.user and (is_granted('ROLE_ADMIN')or challenge.user == app.user) %}
+						{% if app.user and (is_granted('ROLE_ADMIN') or challenge.user == app.user) %}
 							<div class="flex gap-2">
-								<a class="btn-secondary flex items-center space-x-2" href="{{ path('app_challenge_edit',{id: challenge.id}) }}">
-									<svg class="icon-with-text" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24">
-										<g fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" d="M4 22h16" opacity=".5"/><path d="m14.63 2.921l-.742.742l-6.817 6.817c-.462.462-.693.692-.891.947a5.2 5.2 0 0 0-.599.969c-.139.291-.242.601-.449 1.22l-.875 2.626l-.213.641a.848.848 0 0 0 1.073 1.073l.641-.213l2.625-.875c.62-.207.93-.31 1.221-.45q.518-.246.969-.598c.255-.199.485-.43.947-.891l6.817-6.817l.742-.742a3.146 3.146 0 0 0-4.45-4.449Z"/><path d="M13.888 3.664S13.98 5.24 15.37 6.63s2.966 1.483 2.966 1.483m-12.579 9.63l-1.5-1.5" opacity=".5"/></g>
+								<a class="btn-secondary flex items-center space-x-2" href="{{ path('app_challenge_edit', {id: challenge.id}) }}">
+									<svg class="icon-with-text" fill="none" stroke="currentColor" viewbox="0 0 24 24" stroke-width="2">
+										<path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
 									</svg>
 									<span>Modifier</span>
 								</a>
-								<form action="{{ path('app_challenge_delete', {id:challenge.id}) }}" method="post" class="inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce défi ?');">
+								<form action="{{ path('app_challenge_delete', {id:challenge.id}) }}" method="post" class="inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce défi ?')">
 									<input type="hidden" name="_token" value="{{ csrf_token('delete_challenge_' ~ challenge.id) }}">
 									<button type="submit" class="btn-danger flex items-center space-x-2">
-										<svg class="icon-with-text" xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="m6.774 6.4l.812 13.648a.8.8 0 0 0 .798.752h7.232a.8.8 0 0 0 .798-.752L17.226 6.4h1.203l-.817 13.719A2 2 0 0 1 15.616 22H8.384a2 2 0 0 1-1.996-1.881L5.571 6.4zM9.5 9h1.2l.5 9H10zm3.8 0h1.2l-.5 9h-1.2zM4.459 2.353l15.757 2.778a.5.5 0 0 1 .406.58L20.5 6.4L3.758 3.448l.122-.69a.5.5 0 0 1 .579-.405m6.29-1.125l3.94.695a.5.5 0 0 1 .406.58l-.122.689l-4.924-.869l.122-.689a.5.5 0 0 1 .579-.406z"/></svg>
-                                        <span>supprimer</span>
+										<svg class="icon-with-text" fill="none" stroke="currentColor" viewbox="0 0 24 24" stroke-width="2">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+										</svg>
+										<span>Supprimer</span>
 									</button>
-
 								</form>
 							</div>
 						{% endif %}
-
+					</div>
+					<h1 class="text-4xl text-gray-900 mb-4">{{ challenge.title }}</h1>
+					<div class="flex items-center text-gray-600 mb-4">
+						<div class="avatar-md mr-3">
+							<span class="avatar-initial">
+								{{ challenge.user.pseudo|slice(0,1)|upper }}
+							</span>
+						</div>
+						<div>
+							<p class="font-medium text-gray-900">{{ challenge.user.pseudo }}</p>
+							<p class="text-sm">{{ challenge.createdAt|date('d/m/Y à H:i') }}</p>
+						</div>
 					</div>
 				</div>
 			</div>

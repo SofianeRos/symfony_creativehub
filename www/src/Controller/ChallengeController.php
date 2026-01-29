@@ -6,6 +6,7 @@ use App\Entity\Challenge;
 use App\Form\ChallengeType;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,27 +19,24 @@ final class ChallengeController extends AbstractController
     #[Route(name: 'app_challenge_index', methods: ['GET'])]
     public function index(ChallengeRepository $challengeRepository, CategoryRepository $categoryRepository, Request $request): Response
     {
-        //! recuperation des parametres de tri et filtre soumis par l'utilisateur
-        $categoryId =  $request->query->getInt('category', 0);
-        $sortBy =  $request->query->get('sort', 'recent');
+        // recupération des paramètres de tri et filtre soumis par l'utilisateur
+        $categoryId = $request->query->getInt('category', 0);
+        $sortBy = $request->query->get('sort', 'recent');
 
-
-        //! recuperation de toutes les categories pour pouvoir les afficher dans le filtre
+        //recuperation de toutes les catégories pour pouvoir les afficher (pout filtre)
         $categories = $categoryRepository->findAll();
-        $this->addFlash('categories', $categories);
 
-
-        //! recuperation des challlenges avec possibilites de filtres
+        //recupération des challenges avec possibilité de filtres
         $challenges = $challengeRepository->findAllWithFilters($categoryId, $sortBy);
 
-        //! Compter les votes et commentaires pour chaque challenge
+        // Compter les votes et les commentaires pour chaque challenge
         $challengeStat = [];
         foreach ($challenges as $challenge) {
             $challengeStat[$challenge->getId()] = [
                 'voteCount' => $challenge->getVotes()->count(),
-                'commentCount' => $challenge->getComments()->count(),
+                'commentCount' => $challenge->getComments()->count()
+
             ];
-            
         }
 
         return $this->render('challenge/index.html.twig', [
@@ -46,7 +44,7 @@ final class ChallengeController extends AbstractController
             'challengeStat' => $challengeStat,
             'categories' => $categories,
             'selectCategory' => $categoryId,
-            'selectSort' => $sortBy,
+            'selectSort' => $sortBy
         ]);
     }
 
@@ -71,8 +69,15 @@ final class ChallengeController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_challenge_show', methods: ['GET'])]
-    public function show(Challenge $challenge): Response
+    public function show(int $id, ChallengeRepository $challengeRepository): Response
     {
+        $challenge = $challengeRepository->findActive($id);
+
+        if (!$challenge) {
+            $this->addFlash('error', "Ce défi n'existe pas");
+            return $this->redirectToRoute('app_challenge_index', [], Response::HTTP_SEE_OTHER);
+        }
+
         return $this->render('challenge/show.html.twig', [
             'challenge' => $challenge,
         ]);
@@ -99,25 +104,25 @@ final class ChallengeController extends AbstractController
     #[Route('/{id}/delete', name: 'app_challenge_delete', methods: ['POST'])]
     public function delete(Request $request, Challenge $challenge, EntityManagerInterface $entityManager): Response
     {
-        //! Verifier que l'utilisateur est bin l'auteur du defi
+        // Vérifier que l'utilisateur est bien l'auteur du défi
         if ($challenge->getUser() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('error', "Vous n'avez pas l'autorisation de supprimer ce défi.");
             return $this->redirectToRoute('app_challenge_show', ['id' => $challenge->getId()], Response::HTTP_FORBIDDEN);
-
         }
-        //! Verifier le token CSRF
+
+        // verifier le token
         $token = $request->request->get('_token');
         if (!$this->isCsrfTokenValid('delete_challenge_' . $challenge->getId(), $token)) {
-            $this->addFlash('error', 'Tokken CSRF invalide.');
+            $this->addFlash('error', "Token CSRF invalide.");
             return $this->redirectToRoute('app_challenge_show', ['id' => $challenge->getId()], Response::HTTP_FORBIDDEN);
-            
         }
 
-        //! Soft delete : desactiver le defi
+        //Soft delete
         $challenge->setIsActive(false);
-        $challenge->setUpdatedAt(new \DateTime());
+        $challenge->setUpdatedAt(new DateTime());
+
         $entityManager->flush();
-        $this->addFlash('success', 'Défi supprimé avec succès.');
+        $this->addFlash('success', "Votre défi a été supprimé avec succès.");
 
         return $this->redirectToRoute('app_challenge_index', [], Response::HTTP_SEE_OTHER);
     }

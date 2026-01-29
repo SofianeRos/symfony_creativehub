@@ -24,7 +24,8 @@ class ChallengeRepository extends ServiceEntityRepository
      * @return Challenge[]
      */
 
-    public function findAllWithFilters(int $categoryId = 0, string $sortBy ='recent'): array {
+    public function findAllWithFilters(int $categoryId = 0, string $sortBy = 'recent'): array
+    {
         $qb = $this->createQueryBuilder('c')
             ->leftJoin('c.category', 'cat')
             ->leftJoin('c.user', 'u')
@@ -32,20 +33,19 @@ class ChallengeRepository extends ServiceEntityRepository
             ->leftJoin('c.medias', 'm')
             ->where('c.isActive = :isActive')
             ->setParameter('isActive', true)
-            ->groupBy('c.id')
-        ;
+            ->groupBy('c.id');
 
         //! Filtre par categorie
         if ($categoryId > 0) {
             $qb->andWhere('cat.id = :categoryId')
-               ->setParameter('categoryId', $categoryId);
+                ->setParameter('categoryId', $categoryId);
         }
 
         //! filtre de tri 
         switch ($sortBy) {
             case 'popular':
                 $qb->addSelect('COUNT(v.id) as HIDDEN voteCount')
-                   ->orderBy('voteCount', 'DESC');
+                    ->orderBy('voteCount', 'DESC');
                 break;
             case 'oldest':
                 $qb->orderBy('c.createdAt', 'ASC');
@@ -57,5 +57,24 @@ class ChallengeRepository extends ServiceEntityRepository
         }
         return $qb->getQuery()->getResult();
     }
+    /**
+     * methode quie recupere un challenge actif par son id
+     * @param int $id L'id du challenge
+     * @return Challenge|null
+     */
+    public function findActive(int $id): ?Challenge
+    {
+        $qb = $this->createQueryBuilder('c')
+            ->leftJoin('c.category', 'cat')
+            ->leftJoin('c.user', 'u')
+            ->leftJoin('c.votes', 'v')
+            ->leftJoin('c.medias', 'm')
+            ->where('c.isActive = :isActive')
+            ->andWhere('c.id = :id')
+            ->setParameter('id', $id)
+            ->setParameter('isActive', true)
+            ;
 
+            return $qb->getQuery()->getOneOrNullResult();
+    }
 }
