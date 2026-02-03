@@ -142,7 +142,7 @@
 			{% if app.user %}
 				<div class="mb-8">
 					{{ form_start(commentForm, {
-						'action' : '#',
+						'action' : path("app_comment_create", {id: challenge.id}),
 						'method': 'POST',
 						'attr' : {'class':'space-y-4'}
 					}) }}
