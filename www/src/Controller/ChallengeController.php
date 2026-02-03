@@ -76,7 +76,7 @@ final class ChallengeController extends AbstractController
         $challenge = $challengeRepository->findActive($id);
 
         //! Verifier si l'utilisateur a deja voter 
-
+        
         $hasVoted = false;
         if ($this->getUser()) {
             $hasVoted = $voteRepository->findOneBy([
