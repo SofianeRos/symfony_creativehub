@@ -1,0 +1,56 @@
+<div class="border-l-4 pl-4 border-primary-light{% if level > 0 %}ml-8 mt-4{% endif %}" >
+ <div class="flex items-start space-x-3 mb-2">
+  <div class="avatar-md shrink-0">
+   <span class="avatar-initial">
+    {{ comment.user.pseudo|slice(0, 1)|upper }}
+   </span>
+  </div>
+  <div class="flex-1">
+   <div class="flex items-center space-x-2 mb-1">
+    <span class="font-semibold text-gray-900">{{ comment.user.pseudo }}</span>
+    <span class="text-sm text-gray-500">{{ comment.createdAt|date('d/m/Y à H:i') }}</span>
+   </div>
+   <p class="text-gray-700 whitespace-pre-line">{{ comment.content }}</p>
+
+   {% if app.user and level < 2 %}
+    <button class="link-nav text-sm mt-2 font-medium" data-comment-id="{{ comment.id }}" data-action="click->comment-reply#toggleReply">
+     Répondre
+    </button>
+   {% endif %}
+  </div>
+ </div>
+
+ <!-- Formulaire de réponse (caché par défaut) -->
+ {% if app.user and level < 2 %}
+  <div id="reply-form-{{ comment.id }}" class="hidden mt-4 ml-8">
+   <form method="post" action="{{ path('app_comment_create', {id: challenge.id}) }}" class="space-y-3">
+    <input type="hidden" name="comment[parentComment]" value="{{ comment.id }}">
+    <textarea name="comment[content]" rows="3" placeholder="Écrivez votre réponse..." class="form-textarea" required></textarea>
+    {# Token CSRF stateless - le contrôleur csrf-protection gère le cookie automatiquement #}
+    {# Le contrôleur JavaScript cherche input[data-controller="csrf-protection"] ou input[name="_csrf_token"] #}
+    <input type="hidden" name="comment[_token]" value="{{ csrf_token('submit') }}" data-controller="csrf-protection">
+    <div class="flex space-x-2">
+     <button type="submit" class="btn-primary flex items-center space-x-2">
+      <svg class="icon-with-text" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+       <path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+      </svg>
+      <span>Publier</span>
+     </button>
+     <button type="button" class="btn-cancel cancel-reply" data-comment-id="{{ comment.id }}" data-action="click->comment-reply#cancel">
+      Annuler
+     </button>
+    </div>
+   </form>
+  </div>
+ {% endif %}
+
+ <!-- Réponses -->
+ {% if comment.comments|length > 0 %}
+  <div class="mt-4">
+   {% for reply in comment.comments %}
+    {% include 'partials/_comment.html.twig' with {'comment': reply, 'level': level + 1, 'challenge': challenge} %}
+   {% endfor %}
+  </div>
+ {% endif %}
+</div>
+ 

@@ -2,17 +2,19 @@
 
 namespace App\Controller;
 
+use DateTime;
+use App\Entity\Comment;
 use App\Entity\Challenge;
+use App\Form\CommentType;
 use App\Form\ChallengeType;
+use App\Repository\VoteRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
-use App\Repository\VoteRepository;
-use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/challenge')]
 final class ChallengeController extends AbstractController
@@ -76,7 +78,6 @@ final class ChallengeController extends AbstractController
         $challenge = $challengeRepository->findActive($id);
 
         //! Verifier si l'utilisateur a deja voter 
-        
         $hasVoted = false;
         if ($this->getUser()) {
             $hasVoted = $voteRepository->findOneBy([
@@ -90,10 +91,28 @@ final class ChallengeController extends AbstractController
             return $this->redirectToRoute('app_challenge_index', [], Response::HTTP_SEE_OTHER);
         }
 
+        // recuperer les formulaires de commentaire principal 
+
+        $comment = new Comment();
+        $commentForm = $this->createForm(CommentType::class, $comment);
+
+
+        // recuperer les commentaire principaux (sans parent)
+        $comments = $challenge->getComments()->filter(function (Comment $comment) {
+            return $comment->getParentComment() === null;
+        })->toArray();
+
+        // trier les commentaires par date 
+        usort($comments, function (Comment $a, Comment $b) {
+            return $b->getCreatedAt() <=> $a->getCreatedAt();
+        });
+
         return $this->render('challenge/show.html.twig', [
             'challenge' => $challenge,
             'hasVoted' => $hasVoted,
-            'voteCount' => $challenge->getVotes()->count()
+            'voteCount' => $challenge->getVotes()->count(),
+            'commentForm' => $commentForm,
+            'comments' => $comments,
         ]);
     }
 
