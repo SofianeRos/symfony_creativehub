@@ -1,81 +1,190 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ challenge.title }}
-	- CreativeHub
+ {{ challenge.title }}
+ - CreativeHub
 {% endblock %}
 
 {% block body %}
-	<div class="min-h-screen bg-main py-8">
-		<div class="container-medium">
-			{% include "partials/_messages.html.twig" %}
+ <div class="min-h-screen bg-main py-8">
+  <div class="container-medium">
+   {% include "partials/_messages.html.twig" %}
 
-			{# Bouton retour #}
-			<a class="link-nav inline-flex items-center mb-6" href="{{ path('app_challenge_index') }}">
-				<svg class="icon-sm mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24" stroke-width="2">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
-				</svg>
-				<span>Retour aux défis</span>
-			</a>
+   {# Bouton retour #}
+   <a class="link-nav inline-flex items-center mb-6" href="{{ path('app_challenge_index') }}">
+    <svg class="icon-sm mr-2" fill="none" stroke="currentColor" viewbox="0 0 24 24" stroke-width="2">
+     <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+    </svg>
+    <span>Retour aux défis</span>
+   </a>
 
-			{# carte principale du challenge #}
-			<div
-				class="card overflow-hidden mb-8">
-				{# image #}
-				{% if challenge.medias|length > 0 %}
-					<img class="w-full h-96 object-cover" src="{{ challenge.medias.first.path }}" alt="{{ challenge.title }}">
-				{% else %}
-					<div class="w-full h-96 gradient-placeholder flex items-center justify-center">
-						<svg class="w-24 h-24 text-primary" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-							<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-						</svg>
-					</div>
-				{% endif %}
+   {# carte principale du challenge #}
+   <div
+    class="card overflow-hidden mb-8">
+    {# image #}
+    {% if challenge.medias|length > 0 %}
+     <img class="w-full h-96 object-cover" src="{{ challenge.medias.first.path }}" alt="{{ challenge.title }}">
+    {% else %}
+     <div class="w-full h-96 gradient-placeholder flex items-center justify-center">
+      <svg class="w-24 h-24 text-primary" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+      </svg>
+     </div>
+    {% endif %}
 
-				<div
-					class="p-8">
-					{# en tête #}
-					<div class="flex items-center justify-between">
-						<span class="badge-category">
-							{{ challenge.category.label }}
-						</span>
-						{% if app.user and (is_granted('ROLE_ADMIN') or challenge.user == app.user) %}
-							<div class="flex gap-2">
-								<a class="btn-secondary flex items-center space-x-2" href="{{ path('app_challenge_edit', {id: challenge.id}) }}">
-									<svg class="icon-with-text" fill="none" stroke="currentColor" viewbox="0 0 24 24" stroke-width="2">
-										<path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-									</svg>
-									<span>Modifier</span>
-								</a>
-								<form action="{{ path('app_challenge_delete', {id:challenge.id}) }}" method="post" class="inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce défi ?')">
-									<input type="hidden" name="_token" value="{{ csrf_token('delete_challenge_' ~ challenge.id) }}">
-									<button type="submit" class="btn-danger flex items-center space-x-2">
-										<svg class="icon-with-text" fill="none" stroke="currentColor" viewbox="0 0 24 24" stroke-width="2">
-											<path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-										</svg>
-										<span>Supprimer</span>
-									</button>
-								</form>
-							</div>
-						{% endif %}
-					</div>
-					<h1 class="text-4xl text-gray-900 mb-4">{{ challenge.title }}</h1>
-					<div class="flex items-center text-gray-600 mb-4">
-						<div class="avatar-md mr-3">
-							<span class="avatar-initial">
-								{{ challenge.user.pseudo|slice(0,1)|upper }}
-							</span>
-						</div>
-						<div>
-							<p class="font-medium text-gray-900">{{ challenge.user.pseudo }}</p>
-							<p class="text-sm">{{ challenge.createdAt|date('d/m/Y à H:i') }}</p>
-						</div>
-					</div>
-				</div>
-			</div>
+    <div
+     class="p-8">
+     {# en tête #}
+     <div class="flex items-center justify-between">
+      <span class="badge-category">
+       {{ challenge.category.label }}
+      </span>
+      {% if app.user and (is_granted('ROLE_ADMIN') or challenge.user == app.user) %}
+       <div class="flex gap-2">
+        <a class="btn-secondary flex items-center space-x-2" href="{{ path('app_challenge_edit', {id: challenge.id}) }}">
+         <svg class="icon-with-text" fill="none" stroke="currentColor" viewbox="0 0 24 24" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+         </svg>
+         <span>Modifier</span>
+        </a>
+        <form action="{{ path('app_challenge_delete', {id:challenge.id}) }}" method="post" class="inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce défi ?')">
+         <input type="hidden" name="_token" value="{{ csrf_token('delete_challenge_' ~ challenge.id) }}">
+         <button type="submit" class="btn-danger flex items-center space-x-2">
+          <svg class="icon-with-text" fill="none" stroke="currentColor" viewbox="0 0 24 24" stroke-width="2">
+           <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+          </svg>
+          <span>Supprimer</span>
+         </button>
+        </form>
+       </div>
+      {% endif %}
+     </div>
+     <h1 class="text-4xl text-gray-900 mb-4">{{ challenge.title }}</h1>
+     <div class="flex items-center text-gray-600 mb-4">
+      <div class="avatar-md mr-3">
+       <span class="avatar-initial">
+        {{ challenge.user.pseudo|slice(0,1)|upper }}
+       </span>
+      </div>
+      <div>
+       <p class="font-medium text-gray-900">{{ challenge.user.pseudo }}</p>
+       <p class="text-sm">{{ challenge.createdAt|date('d/m/Y à H:i') }}</p>
+      </div>
+     </div>
+    </div>
+    {# Bouton de vote #}
+    <div class="vote-container">
+     {% if app.user %}
+      <button class="vote-button {{ hasVoted ? 'voted' : '' }}" id="vote-button" data-challenge-id="{{ challenge.id }}" data-has-voted="{{ hasVoted ? 'true' : 'false' }}">
+       <svg class="vote-icon" fill="none" stroke="currentColor" viewbox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+       </svg>
+       <span id="vote-count" class="vote-count">{{ voteCount }}</span>
+       <span class="vote-text">{{ hasVoted ? 'Retirer' : 'Voter' }}</span>
+      </button>
+     {% else %}
+      <div class="vote-disabled">
+       <svg class="w-10 h-10 mb-2" fill="none" stroke="currentColor" viewbox="0 0 24 24" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+       </svg>
+       <span id="vote-count" class="vote-count">{{ voteCount }}</span>
+       <span class="vote-text">vote{{ voteCount > 1 ? 's' : '' }}</span>
+       <a href="{{ path('app_login') }}" class="link-nav text-xs font-medium">Connectez vous</a>
+      </div>
+     {% endif %}
+    </div>
 
-		</div>
-	</div>
+   </div>
+  </div>
+ </div>
+
+{% block javascript %}
+ {# {{ parent() }} #}
+
+  <script>
+   document.addEventListener('DOMContentLoaded', function () {
+    const voteButton = document.getElementById('vote-button');
+    if (! voteButton) 
+    return;
+
+    voteButton.addEventListener('click', function () { // Désactiver le bouton pendant la requête
+    
+     this.disabled = true;
+
+     const challengeId = this.dataset.challengeId;
+     const hasVoted = this.dataset.hasVoted === 'true';
+     const url = '{{ path('app_vote', {id: '__ID__'}) }}'.replace('__ID__', challengeId);
+     const method = hasVoted ? 'DELETE' : 'POST';
+
+     fetch(url, {
+      method: method,
+      headers: {
+       'X-Requested-With': 'XMLHttpRequest',
+       'Content-Type': 'application/json'
+      }
+     }).then(response => {
+      return response.json().then(data => {
+       if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Une erreur est survenue lors du vote.');
+       }
+       return data;
+      });
+     }).then(data => { // Mettre à jour le compteur principal
+      const voteCountElement = document.getElementById('vote-count');
+      if (voteCountElement) {
+       voteCountElement.textContent = data.voteCount;
+      }
+
+      // Mettre à jour l'état du bouton
+      const newHasVoted = ! hasVoted;
+      this.dataset.hasVoted = newHasVoted ? 'true' : 'false';
+
+      // Toggle la classe 'voted'
+      if (newHasVoted) {
+       this.classList.add('voted');
+      } else {
+       this.classList.remove('voted');
+      }
+
+      // Mettre à jour le texte du bouton
+      const textSpan = this.querySelector('.vote-text');
+      if (textSpan) {
+       textSpan.textContent = newHasVoted ? 'Retirer' : 'Voter';
+      }
+
+      // Mettre à jour l'icône (fill)
+      const icon = this.querySelector('.vote-icon');
+      if (icon) {
+       if (newHasVoted) {
+        icon.setAttribute('fill', 'currentColor');
+       } else {
+        icon.setAttribute('fill', 'none');
+       }
+      }
+
+      // Mettre à jour le compteur dans les statistiques
+      const statsVoteCount = document.getElementById('stats-vote-count');
+      if (statsVoteCount) {
+       statsVoteCount.textContent = data.voteCount + ' vote' + (
+        data.voteCount > 1 ? 's' : ''
+       );
+      }
+
+      // Réactiver le bouton
+      this.disabled = false;
+     }).catch(error => {
+      console.error('Error:', error);
+      // Réactiver le bouton en cas d'erreur
+      this.disabled = false;
+      // Afficher uniquement les erreurs
+      alert(error.message || 'Une erreur est survenue lors du vote.');
+     });
+    });
+   });
+  </script>
+ 
+{% endblock %}
 
 
 {% endblock %}
+ 

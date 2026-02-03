@@ -6,6 +6,7 @@ use App\Entity\Challenge;
 use App\Form\ChallengeType;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
+use App\Repository\VoteRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -69,9 +70,20 @@ final class ChallengeController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_challenge_show', methods: ['GET'])]
-    public function show(int $id, ChallengeRepository $challengeRepository): Response
+    public function show(int $id, ChallengeRepository $challengeRepository, VoteRepository $voteRepository): Response
     {
+
         $challenge = $challengeRepository->findActive($id);
+
+        //! Verifier si l'utilisateur a deja voter 
+
+        $hasVoted = false;
+        if ($this->getUser()) {
+            $hasVoted = $voteRepository->findOneBy([
+                'user' => $this->getUser(),
+                'challenge' => $challenge
+            ])  !== null;
+        }
 
         if (!$challenge) {
             $this->addFlash('error', "Ce défi n'existe pas");
@@ -80,6 +92,8 @@ final class ChallengeController extends AbstractController
 
         return $this->render('challenge/show.html.twig', [
             'challenge' => $challenge,
+            'hasVoted' => $hasVoted,
+            'voteCount' => $challenge->getVotes()->count()
         ]);
     }
 
