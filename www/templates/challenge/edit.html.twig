@@ -1,13 +1,90 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Challenge{% endblock %}
+{% block title %}Modifier un défi - creative hub
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Challenge</h1>
+	<div class="section">
+		<div class="container-medium">
+			<div class="text-center mb-12">
+				<h1 class="text-4xl md:text-5xl text-gray-900 mb-4">
+					Modifier un défi
+				</h1>
+				<p class="text-xl text-gray-600">
+					modifiez votre défi et continuez à inspirer la communauté</p>
+			</div>
 
-    {{ include('challenge/_form.html.twig', {'button_label': 'Update'}) }}
+			{#  formulaire #}
+			<div class="card-padded max-w-3xl mx-auto">
+				{{ form_start(form, {
+                    'attr': {
+                        'class': 'space-y-6',
+                        'enctype': 'multipart/form-data'
+                    }
+            }) }}
+				<div>
+					{# titre #}
 
-    <a href="{{ path('app_challenge_index') }}">back to list</a>
+					{{ form_label(form.title, null, {'label_attr': {'class': 'form-label'}}) }}
+					{{ form_widget(form.title,) }}
+					{{ form_errors(form.title) }}
+				</div>
+				<div>
+					{# description #}
 
-    {{ include('challenge/_delete_form.html.twig') }}
+					{{ form_label(form.description, null, {'label_attr': {'class': 'form-label'}}) }}
+					{{ form_widget(form.description, ) }}
+					{{ form_errors(form.description) }}
+				</div>
+				<div>
+					{# categorie #}
+
+					{{ form_label(form.category, null, {'label_attr': {'class': 'form-label'}}) }}
+					{{ form_widget(form.category, ) }}
+					{{ form_errors(form.category) }}
+				</div>
+
+				<div>
+					{# deadline #}
+
+					{{ form_label(form.deadline, null, {'label_attr': {'class': 'form-label'}}) }}
+					{{ form_widget(form.deadline,) }}
+					{{ form_errors(form.deadline) }}
+					<p class="text-sm text-gray-500 mt-1">laissez ce champ vide si vous ne souhaitez pas définir de date limite</p>
+				</div>
+				{# affichage des medias existants #}
+				{% if challenge.medias|length > 0 %}
+					<div>
+						<label class="form-label">Fichiers actuels</label>
+						<div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-4">
+							{% for media in challenge.medias %}
+								<div class="relative group">
+									<img src="{{ media.path }}" alt="Média {{ loop.index }}" class="w-full h-32 object-cover rounded-lg border-gray-200">
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				{% endif %}
+
+				<div>
+					{# media #}
+
+					{{ form_label(form.files, null, {'label_attr': {'class': 'form-label'}}) }}
+					{{ form_widget(form.files,) }}
+					{{ form_errors(form.files) }}
+					<p class="text-sm text-gray-500 mt-1">type accepté : Jpeg, PNG, GIF, WEBP, SVG, AVIF  Taille maximale : 5 Mo</p>
+				</div>
+				{{ form_rest(form) }}
+				{# bouton #}
+				<div class="flex felx-col sm:flex-row gap-4 pt-4">
+					<button type="submit" class="btn-primary-lg flex-1 flex items-center justify-center space-x-2">
+						<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewbox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 21h8m.174-14.188a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/></svg>
+						<span>Modifier</span>
+					</button>
+					<a href="{{ path('app_challenge_index') }}" class="btn-secondary text-center">annuler</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
 {% endblock %}
