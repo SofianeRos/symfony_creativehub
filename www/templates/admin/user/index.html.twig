@@ -79,7 +79,7 @@
                                 {{ user.createdAt|date('d/m/Y') }}
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                <a href="#" class="link-nav mr-3">Voir</a>
+                                <a href="{{ path('app_admin_user_show', {id: user.id}) }}" class="link-nav mr-3">Voir</a>
                             </td>
                         </tr>
                     {% endfor %}

@@ -2,11 +2,12 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\User;
 use App\Repository\UserRepository;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/admin')]
 final class UserController extends AbstractController
@@ -47,6 +48,14 @@ final class UserController extends AbstractController
             'users' => $users,
             'search' => $search,
             'filter' => $filter
+        ]);
+    }
+
+    #[Route('/user/{id}', name: 'app_admin_user_show')]
+    public function show(User $user): Response
+    {
+        return $this->render('admin/user/show.html.twig', [
+            'user' => $user,
         ]);
     }
 }

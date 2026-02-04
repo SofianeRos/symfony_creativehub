@@ -1,0 +1,106 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Utilisateur : {{ user.pseudo }} - Administration{% endblock %}
+
+{% block admin_content %}
+<div class="mb-8">
+    <a href="{{ path('app_admin_user') }}" class="link-nav mb-4 inline-block">
+        ← Retour à la liste
+    </a>
+    <h1 class="text-4xl text-gray-900 mb-2">{{ user.pseudo }}</h1>
+    <p class="text-gray-600">{{ user.email }}</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Informations -->
+    <div class="lg:col-span-2 space-y-6">
+        <div class="card-padded">
+            <h2 class="text-2xl text-gray-900 mb-4">Informations</h2>
+            <dl class="space-y-4">
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Pseudo</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ user.pseudo }}</dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Email</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ user.email }}</dd>
+                </div>
+                {% if user.bio %}
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Biographie</dt>
+                        <dd class="mt-1 text-sm text-gray-900 whitespace-pre-line">{{ user.bio }}</dd>
+                    </div>
+                {% endif %}
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Rôle</dt>
+                    <dd class="mt-1">
+                        {% if 'ROLE_ADMIN' in user.roles %}
+                            <span class="badge-category-sm" style="background-color: var(--color-accent-light); color: var(--color-accent);">Administrateur</span>
+                        {% else %}
+                            <span class="badge-category-sm">Utilisateur</span>
+                        {% endif %}
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Statut</dt>
+                    <dd class="mt-1">
+                        {% if user.isActive %}
+                            <span class="badge-category-sm" style="background-color: var(--color-success-light); color: var(--color-success);">Actif</span>
+                        {% else %}
+                            <span class="badge-category-sm" style="background-color: var(--color-error-light); color: var(--color-error);">Inactif</span>
+                        {% endif %}
+                    </dd>
+                </div>
+                <div>
+                    <dt class="text-sm font-medium text-gray-500">Date d'inscription</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ user.createdAt|date('d/m/Y à H:i') }}</dd>
+                </div>
+            </dl>
+        </div>
+
+        <!-- Statistiques -->
+        <div class="card-padded">
+            <h2 class="text-2xl text-gray-900 mb-4">Statistiques</h2>
+            <div class="grid grid-cols-3 gap-4">
+                <div class="text-center">
+                    <div class="text-3xl font-bold" style="color: var(--color-primary);">{{ user.challenges|length }}</div>
+                    <div class="text-sm text-gray-600">Défi{{ user.challenges|length > 1 ? 's' : '' }}</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold" style="color: var(--color-accent);">{{ user.votes|length }}</div>
+                    <div class="text-sm text-gray-600">Vote{{ user.votes|length > 1 ? 's' : '' }}</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold" style="color: var(--color-success);">{{ user.comments|length }}</div>
+                    <div class="text-sm text-gray-600">Commentaire{{ user.comments|length > 1 ? 's' : '' }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="space-y-6">
+        <div class="card-padded">
+            <h2 class="text-2xl text-gray-900 mb-4">Actions</h2>
+            <div class="space-y-3">
+                {% if user != app.user %}
+                    <form method="post" action="#">
+                        <input type="hidden" name="_token" value="{{ csrf_token('toggle_user_' ~ user.id) }}">
+                        <button type="submit" class="btn-secondary w-full">
+                            {{ user.isActive ? 'Désactiver' : 'Activer' }} l'utilisateur
+                        </button>
+                    </form>
+                    <form method="post" action="#" 
+                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
+                        <button type="submit" class="btn-cancel w-full">Supprimer l'utilisateur</button>
+                    </form>
+                {% else %}
+                    <p class="text-sm text-gray-600">Vous ne pouvez pas modifier votre propre compte.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+ 
