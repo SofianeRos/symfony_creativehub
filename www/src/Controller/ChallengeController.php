@@ -3,10 +3,14 @@
 namespace App\Controller;
 
 use DateTime;
+use Exception;
 use App\Entity\Comment;
 use App\Entity\Challenge;
+use App\Entity\Media;
 use App\Form\CommentType;
 use App\Form\ChallengeType;
+use App\Service\FileUploader;
+use PhpParser\Node\Stmt\TryCatch;
 use App\Repository\VoteRepository;
 use App\Repository\CategoryRepository;
 use App\Repository\ChallengeRepository;
@@ -52,15 +56,53 @@ final class ChallengeController extends AbstractController
     }
 
     #[Route('/new', name: 'app_challenge_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader): Response
     {
         $challenge = new Challenge();
         $form = $this->createForm(ChallengeType::class, $challenge);
         $form->handleRequest($request);
 
+        // definir l'auteur  apres handlerrequest mais avant isSubmitted
+        if ($form->isSubmitted()) {
+            $challenge->setUser($this->getUser());
+        }
+
+
         if ($form->isSubmitted() && $form->isValid()) {
+
+            // definir les autres proprietes
+            $challenge->setCreatedAt(new DateTime());
+            $challenge->setUpdatedAt(new DateTime());
+            $challenge->setIsActive(true);
+            // sauvegarder le challenge dabord pour avoir un ID
             $entityManager->persist($challenge);
             $entityManager->flush();
+
+            // gerer l'upload de l'image si presente
+            $files = $form->get('files')->getData();
+            if ($files) {
+                foreach ($files as $file) {
+                    try {
+                        //upload du fichier 
+                        $filename = $fileUploader->upload($file, 'challenges');
+
+                        // on enregistre en bdd les medias 
+                        $media = new Media();
+                        $media->setPath($filename);
+                        
+                        $challenge->addMedia($media);
+
+                        $entityManager->persist($media);
+                    } catch (Exception $e) {
+                        $this->addFlash('error', "Erreur lors de l'upload du fichier: " . $e->getMessage());
+                    }
+                }
+
+                
+                $entityManager->persist($challenge);
+            }
+            $entityManager->flush();
+            $this->addFlash('success', "Le défi a été créé avec succès.");
 
             return $this->redirectToRoute('app_challenge_index', [], Response::HTTP_SEE_OTHER);
         }
