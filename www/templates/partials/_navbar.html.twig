@@ -70,7 +70,7 @@
 				<a href="{{path("app_home")}}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Accueil</a>
 				<a href="{{ path('app_challenge_index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Defis</a>
 				{% if app.user %}
-					<a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Creer un defi</a>
+					<a href="{{ path('app_challenge_new') }}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Creer un defi</a>
 					<a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-gray-900 hover:bg-gray-50">Mon profil</a>
 					{% if is_granted('ROLE_ADMIN') %}
 						<a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-accent hover:text-accent/80 hover:bg-gray-50">Dashboard</a>
