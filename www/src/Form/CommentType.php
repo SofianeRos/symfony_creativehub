@@ -26,7 +26,7 @@ class CommentType extends AbstractType
             'constraints' => [
                 new NotBlank(message: 'Le contenu du commentaire ne peut pas être vide.'),
                 new Length(
-                    min: 5,
+                    min: 1,
                     minMessage: 'Le commentaire doit contenir au moins {{ limit }} caractères.',
                     max: 1000,
                     maxMessage: 'Le commentaire ne peut pas dépasser {{ limit }} caractères.'
