@@ -22,10 +22,10 @@ class CategoryType extends AbstractType
                     'placeholder' => 'Entrez le nom de la catégorie',
                 ],
                 'constraints' => [
-                    new NotBlank([
-                        'message' => 'Le nom de la catégorie ne peut pas être vide.',
+                    new NotBlank(
+                        message: 'Le nom de la catégorie ne peut pas être vide.',
 
-                    ]),
+                    ),
                     new Length(
                         max: 255,
                         maxMessage: 'Le nom de la catégorie ne peut pas dépasser {{ limit }} caractères.'

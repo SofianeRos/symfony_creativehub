@@ -1,0 +1,49 @@
+{
+  "version": "1.0.0",
+  "entries": {
+    "ec075fde26940b585e7fa84e7020a3e4": {
+      "result": {
+        "framework": {
+          "framework": "symfony",
+          "confidence": "high",
+          "confidenceScore": 94,
+          "indicators": [
+            "composer.json: symfony/*",
+            "public/"
+          ],
+          "version": null,
+          "configuration": {
+            "language": "javascript",
+            "cssInJs": [],
+            "stateManagement": [],
+            "buildTool": "webpack"
+          }
+        },
+        "assets": {
+          "javascript": [],
+          "css": [],
+          "images": [],
+          "fonts": [],
+          "apiRoutes": []
+        },
+        "architecture": {
+          "architecture": "static",
+          "buildTool": null,
+          "confidence": "low",
+          "indicators": []
+        },
+        "timestamp": "2026-02-05T11:09:07.949Z",
+        "projectPath": "/home/es_prepa_dev/Bureau/Symfony/CreativeHub/www"
+      },
+      "timestamp": "2026-02-05T11:09:07.953Z",
+      "fileHashes": {
+        "package.json": "212ea4bb68e118665625a4913f48a92c",
+        "composer.json": "ff428f91bca085de9bc2911e5923f4af",
+        "webpack.config.js": "f1d03c8ddfb44f8e1de7fc4d62d5fd06",
+        "composer.lock": "00138d1cabc78c61f32f015733a5982e",
+        "package-lock.json": "9b604bfafc2cacaec5f501bd54a3edb8"
+      },
+      "ttl": 86400
+    }
+  }
+}

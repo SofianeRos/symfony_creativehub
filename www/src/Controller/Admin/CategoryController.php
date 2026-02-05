@@ -10,9 +10,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/admin/category')]
-
+#[IsGranted('ROLE_ADMIN')]
 final class CategoryController extends AbstractController
 {
     #[Route(name: 'app_admin_category_index', methods: ['GET'])]
@@ -33,6 +34,8 @@ final class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($category);
             $entityManager->flush();
+
+            $this->addFlash('success', "La catégorie a été crée avec succès");
 
             return $this->redirectToRoute('app_admin_category_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -69,14 +72,26 @@ final class CategoryController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_admin_category_delete', methods: ['POST'])]
+    #[Route('/{id}/delete', name: 'app_admin_category_delete', methods: ['POST'])]
     public function delete(Request $request, Category $category, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($category);
-            $entityManager->flush();
+
+        $token = $request->request->get('_token');
+        if (!$this->isCsrfTokenValid('delete_category_'.$category->getId(), $token)) {
+            $this->addFlash('error', "Le token de sécurité est invalide");
+            $this->redirectToRoute('app_admin_category_index');
         }
 
+        //on verifie si la categorie est utilise 
+        if ($category->getChallenges()->count() > 0) {
+            $this->addFlash('error', "La catégorie ne peut pas être supprimée car elle est utilisée par des challenges");
+            $this->redirectToRoute('app_admin_category_index');
+        }
+
+        $entityManager->remove($category);
+        $entityManager->flush();
+
+        $this->addFlash('success', "La catégorie a été supprimée avec succès");
         return $this->redirectToRoute('app_admin_category_index', [], Response::HTTP_SEE_OTHER);
     }
 }

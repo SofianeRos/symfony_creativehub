@@ -1,11 +1,32 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/base.html.twig' %}
 
-{% block title %}New Category{% endblock %}
+{% block title %}Nouvelle catégorie - Administration
+{% endblock %}
 
-{% block body %}
-    <h1>Create new Category</h1>
+{% block admin_content %}
+	<div class="mb-8">
+		<a href="{{ path('app_admin_category_index') }}" class="link-nav mb-4 inline-block">
+			← Retour à la liste
+		</a>
+		<h1 class="text-4xl text-gray-900 mb-2">Nouvelle catégorie</h1>
+	</div>
 
-    {{ include('admin/category/_form.html.twig') }}
+	<div class="card-padded max-w-2xl">
+		{{ form_start(form, {'attr': {'class':'space-y-6'}}) }}
 
-    <a href="{{ path('app_admin_category_index') }}">back to list</a>
+		{{ form_label(form.label, null, {'label_attr':{'class': 'form-label'}}) }}
+        {{ form_widget(form.label) }}
+        {{ form_errors(form.label) }}
+
+        {{ form_rest(form) }}
+
+        <div class="flex gap-4 pt-4">
+            <button type="submit" class="btn-primary-lg">Créer la catégorie</button>
+            <a href="{{ path('app_admin_category_index') }}" class="btn-secondary">Annuler</a>
+        </div>
+
+        {{ form_end(form) }}
+	</div>
+
+
 {% endblock %}
