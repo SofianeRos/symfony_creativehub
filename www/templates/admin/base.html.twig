@@ -30,7 +30,7 @@
                            style="{{ currentRoute starts with 'app_admin_challenge' ? 'background-color: var(--color-primary);' : '' }}">
                             Défis
                         </a>
-                        <a href="#" 
+                        <a href="{{ path('app_admin_category_index') }}" 
                            class="px-3 py-2 rounded-md text-sm font-medium transition-colors {{ currentRoute starts with 'app_admin_category' ? 'text-white' : 'text-gray-700 hover:text-gray-900' }}"
                            style="{{ currentRoute starts with 'app_admin_category' ? 'background-color: var(--color-primary);' : '' }}">
                             Catégories
