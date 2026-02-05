@@ -103,6 +103,7 @@ final class UserController extends AbstractController
      * @param EntitiManagerInterface $entityManager
      * @return Response
      */
+    
     #[Route('/user/{id}/delete', name: 'app_admin_user_delete', methods: ['POST'])]
     public function userDelete(
         User $user,

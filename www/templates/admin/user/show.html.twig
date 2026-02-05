@@ -100,7 +100,7 @@
 						</form>
 						<form method="post" action="{{ path('app_admin_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
 							<input type="hidden" name="_token" value="{{ csrf_token('delete_user_' ~ user.id) }}">
-							<button type="submit" class="btn-cancel w-full">Supprimer l'utilisateur</button>
+							<button type="submit" class="btn-danger w-full">Supprimer l'utilisateur</button>
 						</form>
 					{% else %}
 						<p class="text-sm text-gray-600">Vous ne pouvez pas modifier votre propre compte.</p>
