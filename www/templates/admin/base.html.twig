@@ -35,7 +35,7 @@
                            style="{{ currentRoute starts with 'app_admin_category' ? 'background-color: var(--color-primary);' : '' }}">
                             Catégories
                         </a>
-                        <a href="#" 
+                        <a href="{{ path('app_admin_comment') }}" 
                            class="px-3 py-2 rounded-md text-sm font-medium transition-colors {{ currentRoute starts with 'app_admin_comment' ? 'text-white' : 'text-gray-700 hover:text-gray-900' }}"
                            style="{{ currentRoute starts with 'app_admin_comment' ? 'background-color: var(--color-primary);' : '' }}">
                             Commentaires

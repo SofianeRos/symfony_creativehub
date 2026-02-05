@@ -1,0 +1,61 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Commentaires - Administration{% endblock %}
+
+{% block admin_content %}
+<div class="mb-8">
+    <h1 class="text-4xl text-gray-900 mb-2">Gestion des commentaires</h1>
+    <p class="text-gray-600">Gérez les commentaires de la plateforme</p>
+</div>
+
+<!-- Recherche -->
+<div class="card-padded mb-6">
+    <form method="get" class="flex gap-4">
+        <input type="text" name="search" value="{{ search }}" placeholder="Rechercher dans les commentaires..." class="form-input flex-1">
+        <button type="submit" class="btn-primary">Rechercher</button>
+        <a href="{{ path('app_admin_comment') }}" class="btn-secondary">Réinitialiser</a>
+    </form>
+</div>
+
+<!-- Liste des commentaires -->
+<div class="card-padded">
+    {% if comments|length > 0 %}
+        <div class="space-y-4">
+            {% for comment in comments %}
+                <div class="border border-gray-200 rounded-lg p-6 hover:bg-gray-50">
+                    <div class="flex items-start justify-between">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-3 mb-2">
+                                <h3 class="text-lg text-gray-900">
+                                    <a href="{{ path('app_challenge_show', {id: comment.challenge.id}) }}" class="hover:underline" target="_blank">
+                                        {{ comment.challenge.title }}
+                                    </a>
+                                </h3>
+                                {% if comment.parentComment %}
+                                    <span class="badge-category-sm">Réponse</span>
+                                {% endif %}
+                            </div>
+                            <p class="text-gray-700 mb-3 whitespace-pre-line">{{ comment.content }}</p>
+                            <div class="flex items-center gap-4 text-sm text-gray-500">
+                                <span>Par {{ comment.user.pseudo }}</span>
+                                <span>{{ comment.createdAt|date('d/m/Y à H:i') }}</span>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <form method="post" action="{{ path('app_admin_comment_delete', {id: comment.id}) }}" 
+                                  onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce commentaire ?');" 
+                                  class="inline">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete_comment_' ~ comment.id) }}">
+                                <button type="submit" class="btn-danger text-sm">Supprimer</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-gray-600 py-8">Aucun commentaire trouvé</p>
+    {% endif %}
+</div>
+{% endblock %}
+ 
