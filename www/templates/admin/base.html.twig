@@ -53,7 +53,7 @@
 
     <!-- Contenu -->
     <div class="section">
-        <div class="container-medium">
+        <div class="container-main">
             {% for label, messages in app.flashes %}
                 {% for message in messages %}
                     <div class="mb-6 alert-{{ label == 'error' ? 'error' : 'success' }}">
@@ -67,4 +67,3 @@
     </div>
 </div>
 {% endblock %}
- 
